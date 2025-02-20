@@ -10,7 +10,9 @@
       "contextMenus"
     ],
     "host_permissions": [
-      "<all_urls>"
+      "https://x.com/i/grok/*",
+      "https://www.grok.com/*",
+      "https://*.github.com/*"
     ],
     "background": {
       "service_worker": "background.js"

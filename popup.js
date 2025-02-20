@@ -1,4 +1,5 @@
 let currentCodeBlocks = [];
+
 // Listen for messages from background script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Message received:', request);
@@ -11,7 +12,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 document.getElementById('saveButton').addEventListener('click', () => {
   const token = document.getElementById('tokenInput').value;
   try {
-    chrome.storage.sync.set({ githubToken: token }, () => {
+    chrome.storage.local.set({ githubToken: token }, () => {
       alert('Token saved successfully!');
     });
   } catch (error) {
@@ -84,53 +85,6 @@ function displayCodeBlocks(codeBlocks) {
   container.appendChild(createButton);
 }
 
-chrome.storage.sync.get(['githubToken'], (result) => {
-  if (result.githubToken) {
-    document.getElementById('tokenInput').value = result.githubToken;
-  }
-});
-
-document.getElementById('saveToken').addEventListener('click', async () => {
-  const token = document.getElementById('tokenInput').value;
-  try {
-    await chrome.runtime.sendMessage({
-      action: 'saveToken',
-      token: token
-    });
-    alert('Token saved successfully!');
-  } catch (error) {
-    alert('Failed to save token: ' + error.message);
-  }
-});
-
-async function updateTokenStatus() {
-  try {
-    const isValid = await chrome.runtime.sendMessage({ action: 'checkToken' });
-    const tokenInput = document.getElementById('tokenInput');
-    const statusElement = document.getElementById('tokenStatus') || createStatusElement();
-    
-    if (isValid) {
-      statusElement.textContent = '✓ Token valid';
-      statusElement.style.color = 'green';
-      tokenInput.style.display = 'none'; // Hide the input when token is valid
-    } else {
-      statusElement.textContent = '⚠ Token required';
-      statusElement.style.color = 'red';
-      tokenInput.style.display = 'block';
-    }
-  } catch (error) {
-    console.error('Error checking token status:', error);
-  }
-}
-
-function createStatusElement() {
-  const statusElement = document.createElement('div');
-  statusElement.id = 'tokenStatus';
-  document.getElementById('tokenInput').parentNode.insertBefore(statusElement, document.getElementById('tokenInput'));
-  return statusElement;
-}
-
-document.addEventListener('DOMContentLoaded', updateTokenStatus);
 
 // Check for token when popup opens
 document.addEventListener('DOMContentLoaded', async () => {
@@ -139,6 +93,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   if (!githubToken) {
     tokenSection.classList.remove('hidden');
+  } else {
+    document.getElementById('tokenInput').value = githubToken;
   }
 });
 
