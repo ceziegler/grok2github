@@ -1,5 +1,5 @@
 # grok2github
-Chrome extension to save grok code directly to new repo on github
+Chrome extension to save code from Grok's last reply directly to new repo on github
 
 ## Installation
 1. Clone this repo
