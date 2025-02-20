@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "Chat Code to GitHub",
+    "version": "1.0",
+    "description": "Copy code from chat and create GitHub repo",
+    "permissions": [
+      "storage",
+      "scripting",
+      "activeTab",
+      "contextMenus"
+    ],
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html"
+    }
+  }
