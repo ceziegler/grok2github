@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-
+// Saves new GitHub token
 document.getElementById('saveButton').addEventListener('click', async () => {
   const token = document.getElementById('tokenInput').value;
   const tokenSection = document.getElementById('tokenSection');
@@ -29,6 +29,7 @@ document.getElementById('saveButton').addEventListener('click', async () => {
   }
 });
 
+// Captures code blocks from the current page
 document.getElementById('captureButton').addEventListener('click', () => {
   chrome.runtime.sendMessage({ action: 'extractCodeBlocks' }, (response) => {
     if (response.error) {
@@ -42,6 +43,7 @@ document.getElementById('captureButton').addEventListener('click', () => {
   });
 });
 
+// Displays code blocks in the popup
 function displayCodeBlocks(codeBlocks) {
   const container = document.getElementById('codeBlocksContainer');
   container.innerHTML = ''; // Clear previous content
@@ -54,7 +56,7 @@ function displayCodeBlocks(codeBlocks) {
     const input = document.createElement('input');
     input.type = 'text';
     input.placeholder = 'Enter file name (e.g., from Grok)';
-    input.value = `codefile${index + 1}`; // Default value
+    input.value = `renameCodeFile${index + 1}`; // Default value
     input.id = `filename-${index}`;
 
     container.appendChild(pre);
