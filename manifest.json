@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Chat Code to GitHub",
+    "name": "Grok Code to GitHub",
     "version": "1.0",
     "description": "Copy code from most recent Grok response and creates GitHub repo",
     "permissions": [
