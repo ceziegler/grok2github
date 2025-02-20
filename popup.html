@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Code Extractor</title>
+  <style>
+    body { padding: 10px; width: 300px; }
+    input { width: 100%; margin: 5px 0; }
+    button { margin-top: 5px; }
+    pre { background: #f0f0f0; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h3>GitHub Token Setup</h3>
+  <input type="text" id="tokenInput" placeholder="Enter GitHub Token">
+  <button id="saveButton">Save Token</button>
+  <hr>
+  <button id="captureButton">Capture Code Blocks</button>
+  <div id="codeBlocksContainer"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
