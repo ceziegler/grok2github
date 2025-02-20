@@ -28,9 +28,25 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   });
   
   function extractCodeBlocks() {
-    const codeElements = document.querySelectorAll('pre > code[class^="language-"], code[class^="language-"]');
+
+    const selectorMap = {
+      "default": 'div[class^="message-bubble"]',
+      "x.com": 'div[style^="display: block;"]',
+    };
+
+    const sub_selectorMap = { 
+      "default": 'code',
+       "x.com": 'pre > code[class^="language-"], code[class^="language-"]'
+    };
+  
+    const selector = selectorMap[window.location.hostname] || selectorMap["default"];
+    const codeElements = document.querySelectorAll(selector);
+    const lastCodeElement = codeElements[codeElements.length - 1];
+    const sub_selector = sub_selectorMap[window.location.hostname] || sub_selectorMap["default"];
+    const sub_codeElements = lastCodeElement.querySelectorAll(sub_selector);
+    
     const codeBlocks = [];
-    codeElements.forEach((el) => {
+    sub_codeElements.forEach((el) => {
       const code = el.textContent.trim();
       if (code) {
         codeBlocks.push(code);
