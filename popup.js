@@ -9,10 +9,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 
-document.getElementById('saveButton').addEventListener('click', () => {
+document.getElementById('saveButton').addEventListener('click', async () => {
   const token = document.getElementById('tokenInput').value;
+  const tokenSection = document.getElementById('tokenSection');
+
+  const isValid = await validateGitHubToken(token);
+  if (!isValid) {
+    tokenSection.classList.remove('hidden');
+    alert('Invalid token. Please try again.');
+    return;
+  }
   try {
     chrome.storage.local.set({ githubToken: token }, () => {
+      tokenSection.classList.add('hidden');
       alert('Token saved successfully!');
     });
   } catch (error) {
@@ -85,6 +94,22 @@ function displayCodeBlocks(codeBlocks) {
   container.appendChild(createButton);
 }
 
+// Function to validate GitHub token
+async function validateGitHubToken(token) {
+  try {
+    const response = await fetch('https://api.github.com/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    return response.ok;
+  } catch (error) {
+    console.error('Error validating token:', error);
+    return false;
+  }
+}
 
 // Check for token when popup opens
 document.addEventListener('DOMContentLoaded', async () => {
@@ -93,8 +118,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   if (!githubToken) {
     tokenSection.classList.remove('hidden');
+    return;
+  }
+
+  const isValid = await validateGitHubToken(githubToken);
+  if (!isValid) {
+    tokenSection.classList.remove('hidden');
+    // Optionally remove the invalid token
+    await chrome.storage.local.remove('githubToken');
   } else {
-    document.getElementById('tokenInput').value = githubToken;
+    tokenSection.classList.add('hidden');
   }
 });
 

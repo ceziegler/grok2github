@@ -3,23 +3,159 @@
 <head>
   <title>Chat Code Extractor</title>
   <style>
-    body { padding: 10px; width: 300px; }
-    input { width: 100%; margin: 5px 0; }
-    button { margin-top: 5px; }
-    pre { background: #f0f0f0; padding: 5px; }
-    .hidden { display: none; }
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --success-color: #27ae60;
+      --error-color: #e74c3c;
+      --background-color: #ecf0f1;
+      --text-color: #2c3e50;
+    }
+
+    body {
+      margin: 0;
+      padding: 15px;
+      width: 320px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--background-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .logo {
+      width: 32px;
+      height: 32px;
+    }
+
+    h1 {
+      font-size: 1.2em;
+      margin: 0;
+      color: var(--primary-color);
+    }
+
+    h3 {
+      font-size: 1em;
+      margin: 0 0 10px;
+      color: var(--primary-color);
+    }
+
+    .section {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 4px rgba(52, 152, 219, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: var(--secondary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    button:active {
+      background: #2472a4;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    pre {
+      background: #f5f6f5;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #ddd;
+      margin: 15px 0;
+    }
+
+    .status-message {
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .success {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .error {
+      background: var(--error-color);
+      color: white;
+    }
   </style>
 </head>
 <body>
-  <h1>Grok Code to GitHub</h1>
-  <div id="tokenSection" class="hidden">
-    <h3>GitHub Token Setup</h3>
-    <input type="text" id="tokenInput" placeholder="Enter GitHub Token">
+  <div class="header">
+    <svg class="logo" width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <rect width="32" height="32" rx="8" fill="#2c3e50"/>
+      <path d="M10 8L10 24M14 8L14 24" stroke="#3498db" stroke-width="2"/>
+      <path d="M18 14L22 14M18 18L22 18" stroke="#27ae60" stroke-width="2"/>
+      <path d="M6 12H26" stroke="#ecf0f1" stroke-width="1"/>
+    </svg>
+    <h1>Grok Code to GitHub</h1>
+  </div>
+  
+  <div id="tokenSection" class="section hidden">
+    <h3>GitHub Token</h3>
+    <input type="text" id="tokenInput" placeholder="Enter GitHub Personal Access Token">
     <button id="saveButton">Save Token</button>
   </div>
-  <hr>
-  <button id="captureButton">Capture Code Blocks</button>
-  <div id="codeBlocksContainer"></div>
+
+  <div class="section">
+    <button id="captureButton">Capture Code Blocks</button>
+    <div id="codeBlocksContainer"></div>
+    <div id="statusContainer"></div>
+  </div>
+
   <script src="popup.js"></script>
 </body>
 </html>

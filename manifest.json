@@ -2,12 +2,11 @@
     "manifest_version": 3,
     "name": "Chat Code to GitHub",
     "version": "1.0",
-    "description": "Copy code from Grok chat and create GitHub repo",
+    "description": "Copy code from most recent Grok response and creates GitHub repo",
     "permissions": [
       "storage",
       "scripting",
-      "activeTab",
-      "contextMenus"
+      "activeTab"
     ],
     "host_permissions": [
       "https://x.com/i/grok/*",
