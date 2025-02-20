@@ -22,6 +22,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           return;
         }
         createGitHubRepo(files, result.githubToken, repoName);
+        
       });
     }
   });
@@ -94,8 +95,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           throw new Error(`Failed to add file ${filename}: ${errorData.message}`);
         }
       }
-
+      
       // Use a more generic success message that doesn't expose details
+      chrome.runtime.sendMessage({ type: 'showAlert', message: 'Repository created successfully!' })
       return { success: true, message: 'Repository created successfully' };
     } catch (error) {
       console.error('Error creating repository:', error);

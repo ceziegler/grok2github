@@ -7,12 +7,15 @@
     input { width: 100%; margin: 5px 0; }
     button { margin-top: 5px; }
     pre { background: #f0f0f0; padding: 5px; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <h3>GitHub Token Setup</h3>
-  <input type="text" id="tokenInput" placeholder="Enter GitHub Token">
-  <button id="saveButton">Save Token</button>
+  <div id="tokenSection" class="hidden">
+    <h3>GitHub Token Setup</h3>
+    <input type="text" id="tokenInput" placeholder="Enter GitHub Token">
+    <button id="saveButton">Save Token</button>
+  </div>
   <hr>
   <button id="captureButton">Capture Code Blocks</button>
   <div id="codeBlocksContainer"></div>

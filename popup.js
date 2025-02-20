@@ -1,10 +1,22 @@
 let currentCodeBlocks = [];
+// Listen for messages from background script
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('Message received:', request);
+  if (request.type === 'showAlert') {
+      alert(request.message);
+  }
+});
+
 
 document.getElementById('saveButton').addEventListener('click', () => {
   const token = document.getElementById('tokenInput').value;
-  chrome.storage.sync.set({ githubToken: token }, () => {
-    alert('Token saved successfully!');
-  });
+  try {
+    chrome.storage.sync.set({ githubToken: token }, () => {
+      alert('Token saved successfully!');
+    });
+  } catch (error) {
+    alert('Failed to save token: ' + error.message);
+  }
 });
 
 document.getElementById('captureButton').addEventListener('click', () => {
@@ -85,8 +97,6 @@ document.getElementById('saveToken').addEventListener('click', async () => {
       action: 'saveToken',
       token: token
     });
-    // Clear the input field after successful save
-    document.getElementById('tokenInput').value = '';
     alert('Token saved successfully!');
   } catch (error) {
     alert('Failed to save token: ' + error.message);
@@ -121,3 +131,14 @@ function createStatusElement() {
 }
 
 document.addEventListener('DOMContentLoaded', updateTokenStatus);
+
+// Check for token when popup opens
+document.addEventListener('DOMContentLoaded', async () => {
+  const { githubToken } = await chrome.storage.local.get('githubToken');
+  const tokenSection = document.getElementById('tokenSection');
+  
+  if (!githubToken) {
+    tokenSection.classList.remove('hidden');
+  }
+});
+
